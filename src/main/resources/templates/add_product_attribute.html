@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="res/static/css/main.css">
+    <link rel="stylesheet" type="text/css" href="res/layui/css/layui.css">
+    <script type="text/javascript" src="res/layui/layui.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <script type="text/javascript" src="res/static/js/jquery.min.js"></script>
+</head>
+<body id="list-cont">
+<ul class="layui-nav">
+    <li class="layui-nav-item">
+        <a href="product.html">商品管理</a>
+    </li>
+    <li class="layui-nav-item">
+        <a href="order_form.html">订单管理<span class="layui-badge-dot"></span></a>
+    </li>
+    <li class="layui-nav-item">
+        <a href=""><img src="a.jpg" class="layui-nav-img">我</a>
+        <dl class="layui-nav-child">
+            <dd><a href="javascript:;">登陆</a></dd>
+            <dd><a href="javascript:;">退出</a></dd>
+        </dl>
+    </li>
+
+</ul>
+<div class="layui-tab layui-tab-card">
+    <ul class="layui-tab-title">
+        <li class="layui-this">商品属性总览</li>
+        <li>商品属性添加</li>
+        <li>商品属性修改</li>
+        <li>商品属性删除</li>
+    </ul>
+    <div class="layui-tab-content" style="height: 100%;">
+        <div class="layui-tab-item layui-show">
+            <table class="layui-table">
+                <colgroup>
+                    <col width="150">
+                    <col width="200">
+                    <col>
+                </colgroup>
+                <thead>
+                <tr>
+                    <th>id</th>
+                    <th>颜色</th>
+                    <th>类型</th>
+                    <th>价格</th>
+                    <th>数量</th>
+                </tr>
+                </thead>
+                <tbody>
+                {{#attributes}}
+                <tr>
+                    <td>{{attributeId}}</td>
+                    <td>{{color}}</td>
+                    <td>{{type}}</td>
+                    <td>{{price}}</td>
+                    <td>{{amount}}</td>
+                </tr>
+                {{/attributes}}
+                </tbody>
+            </table>
+        </div>
+        <div class="layui-tab-item">
+            <form class="layui-form" action="addProductAttribute" method="post">
+                <input type="hidden" name="productId" value="{{productId}}">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">商品颜色</label>
+                    <div class="layui-input-block">
+                        <input type="text"   name="color"  placeholder="请输入商品颜色" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">商品类型</label>
+                    <div class="layui-input-block">
+                        <input type="text"  name="type"   placeholder="衣服类输入size，其它输入型号" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">该类型商品价格</label>
+                    <div class="layui-input-block">
+                        <input type="text"  name="price"  lay-verify="required|number" placeholder="请输入价格" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">该类型商品数量</label>
+                    <div class="layui-input-block">
+                        <input type="text"  name="amount"   lay-verify="required|number" placeholder="请输入数量" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="layui-tab-item">
+            <form class="layui-form" action="modifyProductAttribute" method="post">
+                <!--<input type="hidden" id="attributeId" name="attributeId"  >-->
+                <input type="hidden" name="productId" value="{{productId}}">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">选择要修改的商品属性id</label>
+                    <div class="layui-input-block">
+                        <select name="attributeId" lay-verify="required"  id="modify">
+                            <option value=""></option>
+                            {{#attributes}}
+                            <option value="{{attributeId}}">{{attributeId}}</option>
+                            {{/attributes}}
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">商品颜色</label>
+                    <div class="layui-input-block">
+                        <input type="text" id="color" name="color"  lay-verify="required" placeholder="请输入商品颜色" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">商品类型</label>
+                    <div class="layui-input-block">
+                        <input type="text" id="type" name="type"  lay-verify="required" placeholder="衣服类输入size，其它输入型号" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">该类型商品价格</label>
+                    <div class="layui-input-block">
+                        <input type="text"  id="price" name="price" lay-verify="required|number" placeholder="请输入价格" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">该类型商品数量</label>
+                    <div class="layui-input-block">
+                        <input type="text" id="amount" name="amount"   lay-verify="required|number" placeholder="请输入数量" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="layui-tab-item">
+            <table class="layui-table">
+                <colgroup>
+                    <col width="150">
+                    <col width="200">
+                    <col>
+                </colgroup>
+                <thead>
+                <tr>
+                    <th>id</th>
+                    <th>颜色</th>
+                    <th>类型</th>
+                    <th>数量</th>
+                    <th>价格</th>
+                    <th>删除</th>
+                </tr>
+                </thead>
+                <tbody>
+                {{#attributes}}
+                <tr>
+                    <td>{{attributeId}}</td>
+                    <td>{{color}}</td>
+                    <td>{{type}}</td>
+                    <td>{{amount}}</td>
+                    <td>{{price}}</td>
+                    <td>
+                        <button type="button" class="layui-btn" onclick="deleteAttribute('{{attributeId}}')">
+                            <i class="layui-icon">&#xe640;</i>删除商品
+                        </button>
+                    </td>
+                </tr>
+                {{/attributes}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<form id="form1" action="deleteAttribute" method="post">
+    <input type="hidden" id="attributeId" name="attributeId">
+    <input type="hidden" name="productId" value="{{productId}}">
+</form>
+
+
+<script type="text/javascript">
+
+    layui.config({
+        base: 'res/static/js/util/' //你存放新模块的目录，注意，不是layui的模块目录
+    }).use(['mm','carousel','element','layer','form'],function(){
+        var form=layui.form;
+        form.on('select', function(data){
+            console.log(data.elem.id);
+            if(data.elem.id=='modify'){
+                $.get(
+                    "getAttributesByProductId",
+                    {attributeId:data.value},
+                    function(response) {
+                        var obj = eval('(' + response + ')');
+                        document.getElementById('color').value=obj.color;
+                        document.getElementById('type').value=obj.type;
+                        document.getElementById('price').value=obj.price;
+                        document.getElementById('amount').value=obj.amount;
+                    },'text'
+                )
+            }
+            console.log(data.value);
+        });
+
+    });
+    function deleteAttribute(attributeId) {
+        document.getElementById("attributeId").value=attributeId;
+        document.getElementById("form1").submit();
+
+    }
+</script>
+</body>
+</html>

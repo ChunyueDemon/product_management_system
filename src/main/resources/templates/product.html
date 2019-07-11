@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" type="text/css" href="res/static/css/main.css">
+	<link rel="stylesheet" type="text/css" href="res/layui/css/layui.css">
+	<script type="text/javascript" src="res/layui/layui.js"></script>
+	<script type="text/javascript" src="res/static/js/jquery.min.js"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+</head>
+<body id="list-cont">
+<ul class="layui-nav">
+	<li class="layui-nav-item">
+		<a href="product.html">商品管理</a>
+	</li>
+	<li class="layui-nav-item">
+		<a href="order_form.html">订单管理<span class="layui-badge-dot"></span></a>
+	</li>
+	<li class="layui-nav-item">
+		<a href=""><img src="a.jpg" class="layui-nav-img">我</a>
+		<dl class="layui-nav-child">
+			<dd><a href="javascript:;">登陆</a></dd>
+			<dd><a href="javascript:;">退出</a></dd>
+		</dl>
+	</li>
+
+</ul>
+<div class="layui-tab layui-tab-card">
+	<ul class="layui-tab-title">
+		<li class="layui-this">商品信息总览</li>
+		<li>商品添加</li>
+		<li>商品编辑</li>
+		<li>商品删除</li>
+	</ul>
+	<div class="layui-tab-content" style="height: 100%;">
+		<div class="layui-tab-item layui-show">
+			<table class="layui-table">
+				<colgroup>
+					<col width="150">
+					<col width="200">
+					<col>
+				</colgroup>
+				<thead>
+				<tr>
+					<th>商品id</th>
+					<th>商品名称</th>
+					<th>商品图</th>
+					<th>商品简介</th>
+					<th>商品价格</th>
+					<th>添加商品属性</th>
+					<th>是否在售</th>
+				</tr>
+				</thead>
+				<tbody>
+				{{#products}}
+				<tr>
+					<td>{{productId}}</td>
+					<td>{{productName}}</td>
+					<td><a onclick="displayImg('http://localhost:8777/img/product/{{productImg}}')">点击查看商品封面图</a></td>
+					<td><a onclick="displayImg('http://localhost:8777/img/productDesc/{{productDescImg}}')">点击查看商品介绍图</a></td>
+					<td>{{productPrice}}</td>
+					<td><button type="button" class="layui-btn" onclick="addProductAttribute('{{productId}}')">
+						<i class="layui-icon">&#xe654;</i>点击添加
+					</button></td>
+					<td>{{available}}</td>
+				</tr>
+				{{/products}}
+				</tbody>
+			</table>
+		</div>
+		<div class="layui-tab-item">
+			<form class="layui-form" action="/addProduct" method="post">
+				<div class="layui-form-item">
+					<label class="layui-form-label">商品名称</label>
+					<div class="layui-input-block">
+						<input type="text" name="productName" required  lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<input type="hidden" id="productImgName" name="productImgName"  class="layui-input">
+				<input type="hidden" id="productDescImgName" name="productDescImgName"  class="layui-input">
+				<div class="layui-form-item">
+					<label class="layui-form-label">上传商品图</label>
+					<div class="layui-input-block">
+						<button type="button" class="layui-btn" id="test1">
+							<i class="layui-icon">&#xe67c;</i>上传图片
+						</button>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">上传的商品图</label>
+					<div  id="img1" class="layer-photos-demo">
+
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">上传商品介绍图</label>
+					<div class="layui-input-block">
+						<button type="button" class="layui-btn" id="test2">
+							<i class="layui-icon">&#xe67c;</i>上传图片
+						</button>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">上传的商品图介绍</label>
+					<div  id="img2" class="layer-photos-demo">
+
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">是否上架</label>
+					<div class="layui-input-block">
+						<select name="available" lay-verify="required"  >
+							<option value=""></option>
+							<option value="是">是</option>
+							<option value="否">否</option>
+						</select>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">商品价格</label>
+					<div class="layui-input-block">
+						<input type="text" name="productPrice" required  lay-verify="required|number" placeholder="请输入价格" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">商品数量</label>
+					<div class="layui-input-block">
+						<input type="text" name="productNumber" required  lay-verify="required|number" placeholder="请输入数量" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<div class="layui-input-block">
+						<button class="layui-btn" lay-submit="" lay-filter="formDemo1">立即提交</button>
+						<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+					</div>
+				</div>
+			</form>
+
+
+		</div>
+		<div class="layui-tab-item">
+			<form class="layui-form" action="modifyProductInfo" method="post">
+				<div class="layui-form-item">
+					<label class="layui-form-label">选择要修改的商品id</label>
+					<div class="layui-input-block">
+						<select name="productId" lay-verify="required"  id="modify">
+							<option value=""></option>
+							{{#products}}
+							<option value="{{productId}}">{{productId}}</option>
+							{{/products}}
+						</select>
+					</div>
+				</div>
+				<input type="hidden" id="productImgName1" name="productImgName"  class="layui-input">
+				<input type="hidden" id="productDescImgName1" name="productDescImgName"  class="layui-input">
+				<div class="layui-form-item">
+					<label class="layui-form-label">商品名称</label>
+					<div class="layui-input-block">
+						<input type="text" id="productName" name="productName" required  lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">上传商品图</label>
+					<div class="layui-input-block">
+						<button type="button" class="layui-btn" id="test3">
+							<i class="layui-icon">&#xe67c;</i>上传图片
+						</button>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">上传的商品图</label>
+					<div  id="img3" class="layer-photos-demo">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">上传商品介绍图</label>
+					<div class="layui-input-block">
+						<button type="button" class="layui-btn" id="test4">
+							<i class="layui-icon">&#xe67c;</i>上传图片
+						</button>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">上传的商品介绍图</label>
+					<div  id="img4" class="layer-photos-demo">
+
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">是否上架</label>
+					<div class="layui-input-block">
+						<select name="available" lay-verify="required"  id="a" >
+							<option value=""></option>
+							<option value="是">是</option>
+							<option value="否">否</option>
+						</select>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">商品价格</label>
+					<div class="layui-input-block">
+						<input type="text" id="productPrice" name="productPrice" required  lay-verify="required|number" placeholder="请输入价格" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">商品数量</label>
+					<div class="layui-input-block">
+						<input type="text" id="productNumber" name="productNumber" required  lay-verify="required|number" placeholder="请输入数量" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<div class="layui-input-block">
+						<button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+						<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+					</div>
+				</div>
+			</form>
+
+		</div>
+		<div class="layui-tab-item">
+			<table class="layui-table">
+				<colgroup>
+					<col width="150">
+					<col width="200">
+					<col>
+				</colgroup>
+				<thead>
+				<tr>
+					<th>商品id</th>
+					<th>商品名称</th>
+					<th>商品图</th>
+					<th>商品简介</th>
+					<th>商品价格</th>
+					<th>是否在售</th>
+					<th>商品删除</th>
+				</tr>
+				</thead>
+				<tbody>
+				{{#products}}
+				<tr>
+					<td>{{productId}}</td>
+					<td>{{productName}}</td>
+					<td><a onclick="displayImg('http://localhost:8777/img/product/{{productImg}}')">点击查看商品封面图</a></td>
+					<td><a onclick="displayImg('http://localhost:8777/img/productDesc/{{productDescImg}}')">点击查看商品介绍图</a></td>
+					<td>{{productPrice}}</td>
+					<td>{{available}}</td>
+					<td><button type="button" class="layui-btn" onclick="confirmDelete('{{productId}}')">
+						<i class="layui-icon">&#xe640;</i>删除商品
+					</button></td>
+				</tr>
+				{{/products}}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<form action="deleteProductInfo" method="post" id="delete">
+	<input type="hidden" id="deleteProductId" name="productId">
+</form>
+
+<script type="text/javascript">
+
+    layui.config({
+        base: 'res/static/js/util/' //你存放新模块的目录，注意，不是layui的模块目录
+    }).use(['mm','carousel','element','form','upload'],function(){
+        var form = layui.form;
+        form.on('select', function(data){
+            console.log(data.elem.id);
+            if(data.elem.id=='modify'){
+                $.get(
+                    "getProductInfo",
+                    {productId:data.value},
+                    function(response) {
+                        var obj = eval('(' + response + ')');
+                        document.getElementById("productName").value=obj.productName;
+                        document.getElementById("productPrice").value=obj.productPrice;
+                        document.getElementById("productNumber").value=obj.productNumber;
+                        document.getElementById("img3").innerHTML='<img layer-pid="图片id，可以不写" layer-src=http://localhost:8777/img/product/'+obj.productImg+' src=http://localhost:8777/img/suolueProduct/'+obj.productImg+' alt="商品图">\n';
+                        document.getElementById("img4").innerHTML='\t\t\t\t\t<img layer-pid="图片id，可以不写" layer-src=http://localhost:8777/img/productDesc/'+obj.productDescImg+' src=http://localhost:8777/img/suolueProductDesc/'+obj.productDescImg+' alt="商品介绍图片">';
+                        document.getElementById("productDescImgName1").value=obj.productImg;
+                        document.getElementById("productDescImgName1").value=obj.productDescImg;
+                        layer.photos({
+                            photos: '.layer-photos-demo'
+                            ,anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
+                        });
+
+                    },'text'
+                )
+			}
+            console.log(data.value);
+        });
+
+
+
+        var upload = layui.upload;
+
+        //执行实例
+        var uploadInst = upload.render({
+            elem: '#test1' //绑定元素
+            ,url: '/uploadProductImg/' //上传接口
+            ,done: function(res){
+                console.log(res.data);
+                console.log(res.msg);
+                //上传完毕回调
+                layer.msg("恭喜你上传商品图片成功！");
+                document.getElementById("productImgName").value=res.msg;
+                var preview='<img layer-pid="图片id，可以不写" layer-src=http://localhost:8777/img/product/'+res.msg+' src=http://localhost:8777/img/suolueProduct/'+res.msg+' alt="商品图">\n';
+                document.getElementById("img1").innerHTML=preview;
+                layer.photos({
+                    photos: '.layer-photos-demo'
+                    ,anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
+                });
+
+            }
+            ,error: function(){
+                //请求异常回调
+            }});
+
+        //执行实例
+        var uploadInst = upload.render({
+            elem:'#test2'//绑定元素
+            ,url: '/uploadProductDesc/' //上传接口
+            ,done: function(res){
+                //上传完毕回调
+                layer.msg("恭喜你上传商品介绍图片成功！");
+                document.getElementById("productDescImgName").value=res.msg;
+                var preview= '<img layer-pid="图片id，可以不写" layer-src=http://localhost:8777/img/productDesc/'+res.msg+' src=http://localhost:8777/img/suolueProductDesc/'+res.msg+' alt="商品介绍图片">';
+                document.getElementById("img2").innerHTML=preview;
+                layer.photos({
+                    photos: '.layer-photos-demo'
+                    ,anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
+                });
+            }
+            ,error: function(){
+                //请求异常回调
+            }});
+
+        //执行实例
+        var uploadInst = upload.render({
+            elem:'#test3'//绑定元素
+            ,url: '/uploadProductDesc/' //上传接口
+            ,done: function(res){
+                //上传完毕回调
+                layer.msg("恭喜你上传商品介绍图片成功！");
+                document.getElementById("productDescImgName1").value=res.msg;
+                var preview= '<img layer-pid="图片id，可以不写" layer-src=http://localhost:8777/img/productDesc/'+res.msg+' src=http://localhost:8777/img/suolueProductDesc/'+res.msg+' alt="商品介绍图片">';
+                document.getElementById("img3").innerHTML=preview;
+                layer.photos({
+                    photos: '.layer-photos-demo'
+                    ,anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
+                });
+            }
+            ,error: function(){
+                //请求异常回调
+            }});
+
+        //执行实例
+        var uploadInst = upload.render({
+            elem:'#test4'//绑定元素
+            ,url: '/uploadProductDesc/' //上传接口
+            ,done: function(res){
+                //上传完毕回调
+                layer.msg("恭喜你上传商品介绍图片成功！");
+                document.getElementById("productDescImgName1").value=res.msg;
+                var preview= '<img layer-pid="图片id，可以不写" layer-src=http://localhost:8777/img/productDesc/'+res.msg+' src=http://localhost:8777/img/suolueProductDesc/'+res.msg+' alt="商品介绍图片">';
+                document.getElementById("img4").innerHTML=preview;
+                layer.photos({
+                    photos: '.layer-photos-demo'
+                    ,anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
+                });
+            }
+            ,error: function(){
+                //请求异常回调
+            }});
+
+    });
+
+    //显示图片
+    function displayImg(img) {
+        layer.photos({
+            photos: eval('(' + '{\n' +
+                '  "title": "", //相册标题\n' +
+                '  "id": 123, //相册id\n' +
+                '  "start": 0, //初始显示的图片序号，默认0\n' +
+                '  "data": [   //相册包含的图片，数组格式\n' +
+                '    {\n' +
+                '      "alt": "",\n' +
+                '      "pid": 666, //图片id\n' +
+                '      "src": "'+img+'", //原图地址\n' +
+                '      "thumb": "http://localhost:8777/img/suolueproductDesc/d14e1192-4bf4-4027-a0ef-b7b3f7fefe3c5.jpg" //缩略图地址\n' +
+                '    }\n' +
+                '  ]\n' +
+                '}\n' + ')')
+            ,anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
+        });
+    };
+    function confirmDelete(productId) {
+        layer.open({
+            content: '确认删除id为'+productId+'的商品信息吗？'
+            ,btn: ['确认', '取消']
+            ,yes: function(index, layero){
+                //按钮【按钮一】的回调
+				document.getElementById("deleteProductId").value=productId;
+                document.getElementById("delete").submit();
+                layer.closeAll('dialog');
+            }
+            ,btn2: function(index, layero){
+                //按钮【按钮二】的回调
+
+                //return false 开启该代码可禁止点击该按钮关闭
+            }
+            ,cancel: function(){
+                //右上角关闭回调
+                //return false 开启该代码可禁止点击该按钮关闭
+            }
+        });
+    };
+    function addProductAttribute(id) {
+        layer.msg(id);
+        window.open("http://localhost:8081/add_product_attribute.html?productId="+id);
+    }
+
+
+</script>
+
+</body>
+
+</html>
